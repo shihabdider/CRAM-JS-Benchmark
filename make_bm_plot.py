@@ -20,7 +20,6 @@ bm_df = pandas.read_table('cram_js_runtime.tsv')
 grouped = bm_df.groupby(['Coverage', 'Interval Length'])
 
 bm_means = grouped.mean()
-#print(bm_means.loc['low']['CRAM-JS'])
 bm_stds = grouped.std()
 
 bm_est = { 'low':{}, 'exome':{}, 'high':{} }
@@ -37,6 +36,7 @@ for key in bm_est:
 
 # bm_est['low'] -> {'cramjs': [means, stds], 'samtools':[means, stds]}
 
+print ('Building figure...')
 fig, axs = plt.subplots(1,3)
 
 def make_axis(ax, title, means, stds):
@@ -49,12 +49,18 @@ def make_axis(ax, title, means, stds):
                     color='IndianRed', label='Samtools')
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
+    from matplotlib.ticker import FuncFormatter
+
+    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+
     ax.set_ylabel('Runtime (seconds)')
     ax.set_title(title)
     ax.set_xticks(ind)
     ax.set_xlabel('Interval Length (# of bases)')
     ax.set_xticklabels(('1000', '10000', '100000'))
     ax.set_yscale('log')
+    ax.yaxis.set_major_formatter(formatter)
+    #ax.formatter.useoffset
     ax.legend(loc=2)
 
     return (rects1, rects2)
@@ -81,7 +87,6 @@ titles = {'low':'Human Low Coverage', 'exome':'Human Exome',
         'high':'E. Coli High Coverage'}
 
 for ax, coverage in zip(axs, bm_est):
-    #print (ax, bm_est[coverage]['cramjs'][0])
     cramjs_means = bm_est[coverage]['cramjs'][0]
     samtools_means = bm_est[coverage]['samtools'][0]
     cramjs_std = bm_est[coverage]['cramjs'][1]

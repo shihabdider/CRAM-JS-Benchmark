@@ -21,9 +21,10 @@ if [ ! -f ./test_data/GRCh38_full_analysis_set_plus_decoy_hla.fa.fai ]; then
 fi
 
 if [ ! -f ./test_data/MiSeq_Ecoli_DH10B_110721_PF.bam.cram ]; then
-    echo "Cram index for MiSeq E Coli not found, generating..."
+    echo "Cram file for MiSeq E Coli not found, generating..."
     samtools view -h -C ./test_data/MiSeq_Ecoli_DH10B_110721_PF.bam
 elif [ ! -f ./test_data/MiSeq_Ecoli_DH10B_110721_PF.bam.cram.crai ]; then
+    echo "Cram index for MiSeq E Coli not found, generating..."
     samtools index ./test_data/MiSeq_Ecoli_DH10B_110721_PF.bam.cram
 fi
 
