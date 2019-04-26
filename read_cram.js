@@ -43,7 +43,7 @@ const indexedFile = new IndexedCramFile({
         path: require.resolve(`${cram_path}.crai`),
     }),
     seqFetch: async (seqId, start, end) => {
-        return seq = await t.getResiduesById(seqId, start, end);
+        return seq = await t.getResiduesById(seqId, start-1, end);
     },
     cacheSize: 50*20000,
     fetchSizeLimit: 50*1024*1024,
